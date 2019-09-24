@@ -6,11 +6,10 @@ from os import path
 from os.path import splitext
 
 def foldFix(foldList):
-    for item in foldList:
+    for item in reversed(foldList):
         if("_" in item[0]):
             splitFold = item[0].split("_", 1)
             os.rename(PurePath(item[1]) / item[0], PurePath(item[1]) / (splitFold[1] + " " + splitFold[0]))
-
 def fileFix(fileList):
     for item in fileList:
         fileExt = splitext(item[0])[1]
@@ -18,7 +17,11 @@ def fileFix(fileList):
             fileNum = item[0].split("-", 1)
             if("_" in item[0]):
                 splitFile = (splitext(fileNum[1])[0]).split("_", 1)
-                os.rename(PurePath(item[1]) / item[0], PurePath(item[1]) / (fileNum[0] + "-" + splitFile[1] + " " + splitFile[0] + fileExt))
+                try:
+                    os.rename(PurePath(item[1]) / item[0], PurePath(item[1]) / (fileNum[0] + "-" + splitFile[1] + " " + splitFile[0] + fileExt))
+                except:
+                    print("Error thrown on file " + item)
+                    
         elif("_" in item[0]):
             splitFile = (splitext(item[0])[0]).split("_", 1)
             os.rename(PurePath(item[1]) / item[0], PurePath(item[1]) / (splitFile[1] + " " + splitFile[0] + fileExt))
